@@ -24,3 +24,87 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+/* Tailwind */
+
+@layer utilities {
+  .text-neon-yellow {
+    color: #faff00;
+  }
+  .drop-shadow-neon-yellow {
+    text-shadow: 0 0 5px #faff00, 0 0 10px #faff00, 0 0 20px #ffef5c;
+  }
+
+  .text-neon-pink {
+    color: #ff00ff;
+  }
+  .drop-shadow-neon-pink {
+    text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff66ff;
+  }
+
+  .text-neon-blue {
+    color: #00e5ff;
+  }
+  .drop-shadow-neon-blue {
+    text-shadow: 0 0 5px #00e5ff, 0 0 10px #00e5ff, 0 0 20px #66f2ff;
+  }
+}
+
+
+@layer utilities {
+  /* Amarillo */
+  .text-neon-yellow {
+    color: #faff00;
+  }
+  .border-neon-yellow {
+    border-color: #faff00;
+  }
+  .shadow-neon-yellow {
+    box-shadow: 0 0 5px #faff00, 0 0 10px #faff00, 0 0 20px #ffef5c;
+  }
+
+  /* Rosa */
+  .text-neon-pink {
+    color: #ff00ff;
+  }
+  .border-neon-pink {
+    border-color: #ff00ff;
+  }
+  .shadow-neon-pink {
+    box-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff, 0 0 20px #ff66ff;
+  }
+
+  /* Celeste */
+  .text-neon-blue {
+    color: #00e5ff;
+  }
+  .border-neon-blue {
+    border-color: #00e5ff;
+  }
+  .shadow-neon-blue {
+    box-shadow: 0 0 5px #00e5ff, 0 0 10px #00e5ff, 0 0 20px #66f2ff;
+  }
+
+  /* Rojo */
+  .text-neon-red {
+    color: #ff2d2d;
+  }
+  .border-neon-red {
+    border-color: #ff2d2d;
+  }
+  .shadow-neon-red {
+    box-shadow: 0 0 5px #ff2d2d, 0 0 10px #ff2d2d, 0 0 20px #ff6666;
+  }
+
+  /* Violeta */
+  .text-neon-violet {
+    color: #b966ff;
+  }
+  .border-neon-violet {
+    border-color: #b966ff;
+  }
+  .shadow-neon-violet {
+    box-shadow: 0 0 5px #b966ff, 0 0 10px #b966ff, 0 0 20px #d9a6ff;
+  }
+}

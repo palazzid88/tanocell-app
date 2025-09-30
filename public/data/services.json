@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Portabilidad Numérica",
+    "description": "Cambiá tu compañía sin perder tu número.",
+    "image": "/img/3.png"
+  },
+  {
+    "title": "Servicio Técnico de Celulares",
+    "description": "Reparación rápida y garantizada para todas las marcas.",
+    "image": "/img/4.png"
+  },
+  {
+    "title": "Fibra Óptica e Internet",
+    "description": "Conexión estable y de alta velocidad.",
+    "image": "/img/5.png"
+  },
+  {
+    "title": "Tienda Online",
+    "description": "Accesorios, celulares y mucho más.",
+    "image": "/img/6.png"
+  }
+]
