@@ -1,4 +1,7 @@
+
+
 // src/app/components/Banner.jsx
+
 export default function Banner() {
   return (
     <section className="bg-gradient-to-b from-black via-[#0a0a0a] to-black text-center py-20 px-6 relative overflow-hidden">
@@ -14,7 +17,7 @@ export default function Banner() {
           Accesorios, celulares, servicio técnico y mucho más.
         </p>
 
-        <a
+       <a
           href="https://wa.me/54911XXXXXXX?text=Hola%20quiero%20hacer%20una%20consulta"
           target="_blank"
           rel="noopener noreferrer"
