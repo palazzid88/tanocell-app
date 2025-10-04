@@ -1,7 +1,7 @@
 // src/app/page.jsx
 import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
-import Footer from "./components/Footer";
+import ProductCard from "./components/ProductCard";
 import Servicios from "./components/Servicios";
 
 export default function Home() {
@@ -9,9 +9,8 @@ export default function Home() {
     <main className="flex flex-col min-h-screen">
       <Banner />
       <Servicios />
-      <div className="flex-grow">
-        {/* Aquí después agregamos Productos, Servicios, etc. */}
-      </div>
+      <h1 className="text-3xl font-bold mb-6">Nuestros Productos</h1>
+      <ProductCard />
     </main>
   );
 }
