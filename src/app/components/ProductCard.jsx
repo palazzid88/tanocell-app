@@ -1,38 +1,61 @@
 // src/app/components/ProductCard.jsx
-import { getProducts } from "@/lib/getProducts";
+export default function ProductCard({ product, featured = false, promotionBadge = false }) {
+  if (!product) return null;
 
-export default async function ProductCard() {
-  const products = await getProducts();
-
-  if (!products || products.length === 0) {
-    return (
-      <p className="text-gray-400 text-center mt-10">
-        No hay productos disponibles.
-      </p>
-    );
-  }
+  const telefono = "549XXXXXXXXX"; // tu WhatsApp
+  const mensaje = encodeURIComponent(
+    `Hola Tanocell 👋, quiero consultar por el producto "${product.name}"`
+  );
+  const urlWtp = `https://wa.me/${telefono}?text=${mensaje}`;
 
   return (
-    <section className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-6 p-6">
-      {products.map((product) => (
-        <div
-          key={product.id}
-          className="bg-gray-900 rounded-xl shadow-md p-4 border border-gray-700 hover:border-cyan-400 transition"
-        >
-          {product.images?.[0]?.url && (
-            <img
-              src={product.images[0].url}
-              alt={product.name}
-              className="w-full h-48 object-cover rounded-lg mb-4"
-            />
-          )}
-          <h3 className="text-xl font-semibold text-white">{product.name}</h3>
-          <p className="text-cyan-400 text-lg font-bold">${product.price}</p>
+    <div className="relative bg-gray-900 border border-gray-800 rounded-xl overflow-hidden shadow-md hover:border-cyan-400 transition flex flex-col">
+      {/* Badges */}
+      {featured && (
+        <span className="absolute top-2 left-2 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-1 rounded">
+          Destacado
+        </span>
+      )}
+      {promotionBadge && (
+        <span className="absolute top-2 right-2 bg-cyan-500 text-white text-xs font-bold px-2 py-1 rounded">
+          Promo
+        </span>
+      )}
+
+      {/* Imagen */}
+      {product.images?.[0]?.url ? (
+        <img
+          src={product.images[0].url}
+          alt={product.name}
+          className="w-full h-48 object-cover"
+        />
+      ) : (
+        <div className="w-full h-48 bg-gray-800 flex items-center justify-center text-gray-500 text-sm">
+          Sin imagen
+        </div>
+      )}
+
+      {/* Contenido */}
+      <div className="flex flex-col flex-grow justify-between p-4">
+        <div>
+          <h3 className="text-lg font-semibold text-white mb-1">
+            {product.name}
+          </h3>
+          <p className="text-cyan-400 text-md font-bold mb-2">${product.price}</p>
           {product.description && (
-            <p className="text-gray-400 mt-2 text-sm">{product.description}</p>
+            <p className="text-gray-400 text-sm line-clamp-3">{product.description}</p>
           )}
         </div>
-      ))}
-    </section>
+
+        <a
+          href={urlWtp}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-4 w-full text-center bg-cyan-500 hover:bg-cyan-600 text-white font-semibold py-2 px-4 rounded-lg transition"
+        >
+          Consultar por WhatsApp
+        </a>
+      </div>
+    </div>
   );
 }
