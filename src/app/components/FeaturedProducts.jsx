@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 
-export default function FeaturedProducts({ products }) {
+export default function FeaturedProducts({ products, scrollSpeed = 1 }) {
   const featuredProducts = products.filter((p) => p.featured);
   const scrollRef = useRef(null);
   const scrollAmountRef = useRef(0);
@@ -18,7 +18,7 @@ export default function FeaturedProducts({ products }) {
 
     const loop = () => {
       if (!isPaused) {
-        scrollAmountRef.current += 1; // velocidad de auto-scroll
+        scrollAmountRef.current += scrollSpeed;
         if (scrollAmountRef.current >= el.scrollWidth / 2) {
           scrollAmountRef.current = 0;
         }
@@ -30,7 +30,7 @@ export default function FeaturedProducts({ products }) {
     loop();
 
     return () => cancelAnimationFrame(requestRef.current);
-  }, [isPaused]);
+  }, [isPaused, scrollSpeed]);
 
   const handleTouchStart = () => {
     setIsPaused(true);

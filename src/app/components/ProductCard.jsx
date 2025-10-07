@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function ProductCard({ product, featured, promotion }) {
   const { name, price, images } = product;
 
@@ -36,6 +38,13 @@ export default function ProductCard({ product, featured, promotion }) {
           <h3 className="text-xl font-semibold text-white">{name}</h3>
           <p className="text-cyan-400 text-lg font-bold">${price}</p>
         </div>
+        <Link
+          href={`/products/${product.id}`}
+          className="mt-2 inline-block bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg text-center transition-all duration-300"
+        >
+          Ver más
+      </Link>
+
 
         {/* Botón WhatsApp */}
         <a
