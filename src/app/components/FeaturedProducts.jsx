@@ -1,17 +1,72 @@
-// src/app/components/FeaturedProducts.jsx
+"use client";
+
+import { useRef, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 
-export default function FeaturedProducts({ products = [] }) {
-  const featured = products.filter((p) => p.featured);
+export default function FeaturedProducts({ products }) {
+  const featuredProducts = products.filter((p) => p.featured);
+  const scrollRef = useRef(null);
+  const scrollAmountRef = useRef(0);
+  const requestRef = useRef(null);
+  const pauseTimeoutRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
 
-  if (featured.length === 0) return null;
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const loop = () => {
+      if (!isPaused) {
+        scrollAmountRef.current += 1; // velocidad de auto-scroll
+        if (scrollAmountRef.current >= el.scrollWidth / 2) {
+          scrollAmountRef.current = 0;
+        }
+        el.scrollLeft = scrollAmountRef.current;
+      }
+      requestRef.current = requestAnimationFrame(loop);
+    };
+
+    loop();
+
+    return () => cancelAnimationFrame(requestRef.current);
+  }, [isPaused]);
+
+  const handleTouchStart = () => {
+    setIsPaused(true);
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+  };
+
+  const handleTouchEnd = () => {
+    if (scrollRef.current) {
+      scrollAmountRef.current = scrollRef.current.scrollLeft;
+    }
+    pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 500);
+  };
+
+  if (featuredProducts.length === 0) return null;
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-12">
-      <h2 className="text-3xl font-bold mb-8 text-center">Destacados</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {featured.map((product) => (
-          <ProductCard key={product.id} product={product} featured />
+    <section className="max-w-full py-8 px-4 overflow-hidden">
+      <h2 className="text-2xl font-bold mb-4 text-center">Destacados</h2>
+
+      <div
+        ref={scrollRef}
+        className="flex gap-4 py-4 overflow-x-auto md:overflow-visible scrollbar-hide"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {featuredProducts.concat(featuredProducts).map((product, index) => (
+          <motion.div
+            key={product.id + "-" + index}
+            className="flex-shrink-0 w-64 md:w-72 relative -my-2 z-10"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
+            <ProductCard product={product} />
+          </motion.div>
         ))}
       </div>
     </section>

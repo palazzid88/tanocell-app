@@ -3,8 +3,7 @@ import base from "./airtable";
 
 export async function getProducts() {
   const records = await base("Products").select({}).firstPage();
-  console.log("products en getProducts", records);
-  
+
   return records.map((record) => ({
     id: record.id,
     name: record.fields.name,
@@ -15,5 +14,6 @@ export async function getProducts() {
     promotion: record.fields.promotion,
     featured: record.fields.featured,
     images: record.fields.image || [],
+    category: record.fields.category || null, // ✅ agregar categoría
   }));
 }
