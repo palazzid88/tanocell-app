@@ -30,9 +30,9 @@ export default async function Home() {
       </section>
 
       {/* SERVICIOS */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
+      {/* <section className="max-w-7xl mx-auto px-6 py-12">
         <Servicios />
-      </section>
+      </section> */}
 
       {/* DESTACADOS */}
       <FeaturedProducts products={products} />
