@@ -12,7 +12,7 @@ function getAirtableImageUrl(image) {
 export default function Promotions({ products }) {
   const promoProducts = products.filter((p) => p.promotion).map(p => ({
     ...p,
-    images: p.images?.map(img => ({ ...img, url: getAirtableImageUrl(img) }))
+    images: p.images // ya tienen la url correcta
   }));
 
   const scrollRef = useRef(null);

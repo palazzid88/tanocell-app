@@ -13,7 +13,7 @@ function getAirtableImageUrl(image) {
 export default function FeaturedProducts({ products, scrollSpeed = 1 }) {
   const featuredProducts = products.filter((p) => p.featured).map(p => ({
     ...p,
-    images: p.images?.map(img => ({ ...img, url: getAirtableImageUrl(img) }))
+images: p.images // ya tienen la url correcta
   }));
 
   const scrollRef = useRef(null);

@@ -1,25 +1,20 @@
 import Link from "next/link";
 
-// Función para generar URL estable de Airtable
-function getAirtableImageUrl(image) {
-  if (!image || !image.id) return null;
-  // Airtable expira URLs, así que construimos un enlace "fresco" para SSR
-  return `https://api.airtable.com/v0/meta/buckets/${image.id}/files/${image.id}?format=png`;
-}
-
 export default function ProductCard({ product, featured, promotion }) {
   const { name, price, images } = product;
 
+  // Link de WhatsApp
   const whatsappMessage = encodeURIComponent(
     `Hola Tanocell, quiero consultar por el producto: ${name}`
   );
   const whatsappLink = `https://wa.me/5492615985233?text=${whatsappMessage}`;
 
-  const imageUrl = images?.[0] ? getAirtableImageUrl(images[0]) : null;
+  // Tomamos la primera imagen que tenga URL válida
+  const imageUrl = images?.find(img => img.url)?.url ?? null;
 
   return (
     <div className="bg-gray-900 rounded-xl shadow-md hover:shadow-xl p-4 border border-gray-700 hover:border-cyan-400 hover:scale-105 transition-all duration-300 flex flex-col relative">
-      
+
       {/* BADGE */}
       {featured && (
         <span className="absolute top-2 left-2 bg-yellow-400 text-black px-2 py-1 rounded font-semibold text-xs">
@@ -55,7 +50,6 @@ export default function ProductCard({ product, featured, promotion }) {
           Ver más
         </Link>
 
-        {/* Botón WhatsApp */}
         <a
           href={whatsappLink}
           target="_blank"
