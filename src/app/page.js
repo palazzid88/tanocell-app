@@ -1,3 +1,4 @@
+// src/app/page.js
 import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import Servicios from "./components/Servicios";
@@ -8,15 +9,17 @@ import { getProducts } from "@/lib/getProducts";
 import { getCategories } from "@/lib/getCategories";
 import ProductsGrid from "./components/ProductsGrid";
 
+// Forzar SSR puro
+export const revalidate = 0; // 0 = siempre SSR, no ISR
+
 export default async function Home() {
-  // SSR: obtenemos los productos y categorías directamente desde Airtable
+  // SSR: obtenemos los productos y categorías directamente desde Airtable en cada request
   const [products, categories] = await Promise.all([
     getProducts(),
     getCategories(),
   ]);
 
-console.log("log en page.js", categories);
-
+  console.log("Productos:", products.length, "Categorías:", categories);
 
   return (
     <main className="flex flex-col min-h-screen bg-white text-gray-800">

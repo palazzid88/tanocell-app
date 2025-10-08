@@ -4,8 +4,18 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 
+// Generamos URL fresca de Airtable
+function getAirtableImageUrl(image) {
+  if (!image || !image.id) return null;
+  return `https://api.airtable.com/v0/meta/buckets/${image.id}/files/${image.id}?format=png`;
+}
+
 export default function FeaturedProducts({ products, scrollSpeed = 1 }) {
-  const featuredProducts = products.filter((p) => p.featured);
+  const featuredProducts = products.filter((p) => p.featured).map(p => ({
+    ...p,
+    images: p.images?.map(img => ({ ...img, url: getAirtableImageUrl(img) }))
+  }));
+
   const scrollRef = useRef(null);
   const scrollAmountRef = useRef(0);
   const requestRef = useRef(null);
@@ -19,16 +29,13 @@ export default function FeaturedProducts({ products, scrollSpeed = 1 }) {
     const loop = () => {
       if (!isPaused) {
         scrollAmountRef.current += scrollSpeed;
-        if (scrollAmountRef.current >= el.scrollWidth / 2) {
-          scrollAmountRef.current = 0;
-        }
+        if (scrollAmountRef.current >= el.scrollWidth / 2) scrollAmountRef.current = 0;
         el.scrollLeft = scrollAmountRef.current;
       }
       requestRef.current = requestAnimationFrame(loop);
     };
 
     loop();
-
     return () => cancelAnimationFrame(requestRef.current);
   }, [isPaused, scrollSpeed]);
 
@@ -38,9 +45,7 @@ export default function FeaturedProducts({ products, scrollSpeed = 1 }) {
   };
 
   const handleTouchEnd = () => {
-    if (scrollRef.current) {
-      scrollAmountRef.current = scrollRef.current.scrollLeft;
-    }
+    if (scrollRef.current) scrollAmountRef.current = scrollRef.current.scrollLeft;
     pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 500);
   };
 

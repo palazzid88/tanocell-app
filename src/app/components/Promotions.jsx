@@ -4,10 +4,19 @@ import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import ProductCard from "./ProductCard";
 
+function getAirtableImageUrl(image) {
+  if (!image || !image.id) return null;
+  return `https://api.airtable.com/v0/meta/buckets/${image.id}/files/${image.id}?format=png`;
+}
+
 export default function Promotions({ products }) {
-  const promoProducts = products.filter((p) => p.promotion);
+  const promoProducts = products.filter((p) => p.promotion).map(p => ({
+    ...p,
+    images: p.images?.map(img => ({ ...img, url: getAirtableImageUrl(img) }))
+  }));
+
   const scrollRef = useRef(null);
-  const scrollAmountRef = useRef(0); // posición persistente
+  const scrollAmountRef = useRef(0);
   const requestRef = useRef(null);
   const pauseTimeoutRef = useRef(null);
   const [isPaused, setIsPaused] = useState(false);
@@ -18,17 +27,14 @@ export default function Promotions({ products }) {
 
     const loop = () => {
       if (!isPaused) {
-        scrollAmountRef.current += 1; // velocidad de auto-scroll
-        if (scrollAmountRef.current >= el.scrollWidth / 2) {
-          scrollAmountRef.current = 0; // loop infinito
-        }
+        scrollAmountRef.current += 1;
+        if (scrollAmountRef.current >= el.scrollWidth / 2) scrollAmountRef.current = 0;
         el.scrollLeft = scrollAmountRef.current;
       }
       requestRef.current = requestAnimationFrame(loop);
     };
 
     loop();
-
     return () => cancelAnimationFrame(requestRef.current);
   }, [isPaused]);
 
@@ -38,11 +44,7 @@ export default function Promotions({ products }) {
   };
 
   const handleTouchEnd = () => {
-    if (scrollRef.current) {
-      // sincronizamos el scroll manual con el auto-scroll
-      scrollAmountRef.current = scrollRef.current.scrollLeft;
-    }
-    // reanudar auto-scroll después de 500ms de inactividad
+    if (scrollRef.current) scrollAmountRef.current = scrollRef.current.scrollLeft;
     pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 500);
   };
 

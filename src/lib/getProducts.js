@@ -13,7 +13,11 @@ export async function getProducts() {
     code: record.fields.code,
     promotion: record.fields.promotion,
     featured: record.fields.featured,
-    images: record.fields.image || [],
-    category: record.fields.category || null, // ✅ agregar categoría
+    // Mapeamos todas las imágenes como un array de objetos { url, filename }
+    images: (record.fields.image || []).map(img => ({
+      url: img.url,
+      filename: img.filename
+    })),
+    category: record.fields.category || null,
   }));
 }

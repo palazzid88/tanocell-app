@@ -1,5 +1,12 @@
 import Link from "next/link";
 
+// Función para generar URL estable de Airtable
+function getAirtableImageUrl(image) {
+  if (!image || !image.id) return null;
+  // Airtable expira URLs, así que construimos un enlace "fresco" para SSR
+  return `https://api.airtable.com/v0/meta/buckets/${image.id}/files/${image.id}?format=png`;
+}
+
 export default function ProductCard({ product, featured, promotion }) {
   const { name, price, images } = product;
 
@@ -7,6 +14,8 @@ export default function ProductCard({ product, featured, promotion }) {
     `Hola Tanocell, quiero consultar por el producto: ${name}`
   );
   const whatsappLink = `https://wa.me/5492615985233?text=${whatsappMessage}`;
+
+  const imageUrl = images?.[0] ? getAirtableImageUrl(images[0]) : null;
 
   return (
     <div className="bg-gray-900 rounded-xl shadow-md hover:shadow-xl p-4 border border-gray-700 hover:border-cyan-400 hover:scale-105 transition-all duration-300 flex flex-col relative">
@@ -24,9 +33,9 @@ export default function ProductCard({ product, featured, promotion }) {
       )}
 
       {/* Imagen */}
-      {images?.[0]?.url && (
+      {imageUrl && (
         <img
-          src={images[0].url}
+          src={imageUrl}
           alt={name}
           className="w-full h-35 md:h-50 lg:h-50 object-cover rounded-lg mb-4"
         />
@@ -38,13 +47,13 @@ export default function ProductCard({ product, featured, promotion }) {
           <h3 className="text-xl font-semibold text-white">{name}</h3>
           <p className="text-cyan-400 text-lg font-bold">${price}</p>
         </div>
+
         <Link
           href={`/products/${product.id}`}
           className="mt-2 inline-block bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg text-center transition-all duration-300"
         >
           Ver más
-      </Link>
-
+        </Link>
 
         {/* Botón WhatsApp */}
         <a
