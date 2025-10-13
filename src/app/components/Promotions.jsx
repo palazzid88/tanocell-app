@@ -1,78 +1,36 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import SingleCardCarousel from "./SingleCardCarousel";
 import ProductCard from "./ProductCard";
-
-function getAirtableImageUrl(image) {
-  if (!image || !image.id) return null;
-  return `https://api.airtable.com/v0/meta/buckets/${image.id}/files/${image.id}?format=png`;
-}
+import Link from "next/link";
 
 export default function Promotions({ products }) {
-  const promoProducts = products.filter((p) => p.promotion).map(p => ({
-    ...p,
-    images: p.images // ya tienen la url correcta
-  }));
+  const promos = (products || []).filter((p) => !!p.promotion);
 
-  const scrollRef = useRef(null);
-  const scrollAmountRef = useRef(0);
-  const requestRef = useRef(null);
-  const pauseTimeoutRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const loop = () => {
-      if (!isPaused) {
-        scrollAmountRef.current += 1;
-        if (scrollAmountRef.current >= el.scrollWidth / 2) scrollAmountRef.current = 0;
-        el.scrollLeft = scrollAmountRef.current;
-      }
-      requestRef.current = requestAnimationFrame(loop);
-    };
-
-    loop();
-    return () => cancelAnimationFrame(requestRef.current);
-  }, [isPaused]);
-
-  const handleTouchStart = () => {
-    setIsPaused(true);
-    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
-  };
-
-  const handleTouchEnd = () => {
-    if (scrollRef.current) scrollAmountRef.current = scrollRef.current.scrollLeft;
-    pauseTimeoutRef.current = setTimeout(() => setIsPaused(false), 500);
-  };
-
-  if (promoProducts.length === 0) return null;
+  if (promos.length === 0) return null;
 
   return (
-    <section className="max-w-full py-8 px-4 overflow-hidden">
-      <h2 className="text-2xl font-bold mb-4 text-center">Promociones</h2>
+    <aside className="w-full md:w-80 mt-6 md:mt-0">
+      <div className="bg-black/70 p-4 rounded-xl border border-neon-pink shadow-neon-pink">
+        <h3 className="text-lg font-bold text-neon-pink mb-3">Promociones</h3>
 
-      <div
-        ref={scrollRef}
-        className="flex gap-4 py-4 overflow-x-auto md:overflow-visible scrollbar-hide"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-      >
-        {promoProducts.concat(promoProducts).map((product, index) => (
-          <motion.div
-            key={product.id + "-" + index}
-            className="flex-shrink-0 w-64 md:w-72 relative -my-2 z-10"
-            whileHover={{ scale: 1.05 }}
-            transition={{ type: "spring", stiffness: 300 }}
-          >
-            <ProductCard product={product} promotion={true} />
-          </motion.div>
-        ))}
+        <SingleCardCarousel
+          items={promos}
+          interval={6000}
+          showControls={true}
+          renderItem={(item) => (
+            <div className="w-full">
+              <ProductCard product={item} compact promotion />
+            </div>
+          )}
+        />
+
+        <div className="mt-4 text-center">
+          <Link href="/productos?filter=promotion" className="inline-block px-4 py-2 border-2 border-neon-pink rounded-lg text-neon-pink font-semibold hover:scale-105 transition">
+            Ver promociones
+          </Link>
+        </div>
       </div>
-    </section>
+    </aside>
   );
 }
