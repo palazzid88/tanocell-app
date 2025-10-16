@@ -5,7 +5,6 @@ export async function getCategories() {
     fields: ["category"],
   }).firstPage();
 
-  console.log("✅ Records raw de Airtable:", records);
 
   // Extraemos los strings de category
   const categories = records
@@ -14,7 +13,7 @@ export async function getCategories() {
 
   const unique = [...new Set(categories)];
 
-  console.log("✅ Categorías únicas extraídas:", unique);
+  // console.log("✅ Categorías únicas extraídas:", unique);
 
   return unique.sort();
 }
