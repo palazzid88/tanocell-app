@@ -1,51 +1,49 @@
-// src/app/page.js
 import Banner from "./components/Banner";
 import Promotions from "./components/Promotions";
 import FeaturedProducts from "./components/FeaturedProducts";
 import ProductsGrid from "./components/ProductsGrid";
-import CategoriesSidebar from "./components/CategoriesSidebar";
+import FlyersCarousel from "./components/FlyersCarousel";
 
 import { getProducts } from "@/lib/getProducts";
 import { getCategories } from "@/lib/getCategories";
-import Flyers from "./components/FlyersCarousel";
+import { getFlyers } from "@/lib/getFlyers";
 
-// SSR puro, siempre consulta Airtable
 export const revalidate = 0;
 
 export default async function Home() {
-  const [products, categories] = await Promise.all([
+  const [products, categories, flyers] = await Promise.all([
     getProducts(),
     getCategories(),
+    getFlyers(),
   ]);
 
   return (
     <main className="flex flex-col min-h-screen bg-white text-gray-800">
-
       {/* Banner */}
       <Banner />
 
-<section className="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row gap-8">
+      {/* Sección principal */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <div className="flex flex-col md:flex-row items-center md:items-center gap-8">
+          
+          {/* Columna izquierda: Featured + Promotions */}
+          <div className="flex flex-col gap-6 w-full md:w-[30%] max-w-md mx-auto">
+            <FeaturedProducts products={products} />
+            <Promotions products={products} />
+          </div>
 
-  <div className="flex-1 flex flex-col md:flex-row gap-6">
-    <div className="flex-1">
-      <FeaturedProducts products={products} />
-    </div>
+          {/* Columna derecha: Flyers */}
+          <div className="w-full md:w-[70%] flex justify-center">
+            <FlyersCarousel flyers={flyers} />
+          </div>
 
-    <div className="flex-1">
-      <Promotions products={products} />
-    </div>
-
-    <div className="flex-1">
-      {/* <Flyers /> */}
-    </div>
-  </div>
-</section>
-
-      {/* Grid de productos filtrables */}
-      <section className="max-w-7xl mx-auto px-6 py-12">
-        <ProductsGrid products={products} categories={categories} />
+        </div>
       </section>
 
+      {/* Grid de productos */}
+      <section className="max-w-7xl mx-auto px-4 py-12">
+        <ProductsGrid products={products} categories={categories} />
+      </section>
     </main>
   );
 }
