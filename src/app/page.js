@@ -20,7 +20,7 @@ export default async function Home() {
   return (
     <main className="flex flex-col min-h-screen bg-white text-gray-800">
       {/* Banner */}
-      <Banner />
+      <Banner flyers={flyers}/>
 
       {/* Sección principal */}
       <section className="max-w-7xl mx-auto px-4 py-12">
