@@ -1,16 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ProductCard from "./ProductCard";
 import CategoriesSidebar from "./CategoriesSidebar";
 import { motion, AnimatePresence } from "framer-motion";
-import { FiChevronDown } from "react-icons/fi";
-
+import { FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 export default function ProductsGrid({ products, categories }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredProducts, setFilteredProducts] = useState(products || []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // 🔹 Paginación
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(8);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     if (selectedCategory === "all") {
@@ -24,16 +28,29 @@ export default function ProductsGrid({ products, categories }) {
         )
       );
     }
+    setCurrentPage(1);
   }, [selectedCategory, products]);
 
-  return (
-    <div className="flex flex-col md:flex-row gap-8">
-      {/* Sidebar */}
-      <div className="w-full md:w-1/5">
-      
-        {/* Botón toggle solo en mobile */}
+  const indexOfLast = currentPage * productsPerPage;
+  const indexOfFirst = indexOfLast - productsPerPage;
+  const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
+  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-      <div className="md:hidden mb-4">
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [currentPage, productsPerPage]);
+
+  const goToPrevious = () =>
+    setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
+  const goToNext = () =>
+    setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev));
+
+  return (
+    <div className="flex flex-col gap-8">
+      {/* 🔹 Selector de categorías - MOBILE (desplegable) */}
+      <div className="md:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="w-full bg-gray-200 px-4 py-2 rounded-lg font-semibold text-gray-800 hover:bg-gray-300 flex items-center justify-between transition"
@@ -45,20 +62,15 @@ export default function ProductsGrid({ products, categories }) {
             }`}
           />
         </button>
-      </div>
 
-
-        {/* Sidebar animado solo en mobile */}
-      <motion.div
-        initial={{ height: 0, opacity: 0 }}
-        animate={{ height: sidebarOpen ? "auto" : 0, opacity: sidebarOpen ? 1 : 0 }}
-        transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className="overflow-hidden md:overflow-visible"
-      >
         <motion.div
-          initial={{ y: -10 }}
-          animate={{ y: sidebarOpen ? 0 : -10 }}
-          transition={{ duration: 0.3 }}
+          initial={{ height: 0, opacity: 0 }}
+          animate={{
+            height: sidebarOpen ? "auto" : 0,
+            opacity: sidebarOpen ? 1 : 0,
+          }}
+          transition={{ type: "spring", stiffness: 200, damping: 25 }}
+          className="overflow-hidden mt-2"
         >
           <CategoriesSidebar
             categories={categories}
@@ -66,32 +78,76 @@ export default function ProductsGrid({ products, categories }) {
             setSelectedCategory={setSelectedCategory}
           />
         </motion.div>
-      </motion.div>
+      </div>
 
+      {/* 🔹 Selector de categorías - DESKTOP (navbar superior) */}
+      <div className="hidden md:flex flex-wrap items-center gap-3 bg-gray-100 p-4 rounded-xl border border-gray-300">
+        <button
+          onClick={() => setSelectedCategory("all")}
+          className={`px-4 py-2 rounded-lg font-semibold transition ${
+            selectedCategory === "all"
+              ? "bg-cyan-500 text-white"
+              : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+          }`}
+        >
+          Todas
+        </button>
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setSelectedCategory(cat)}
+            className={`px-4 py-2 rounded-lg font-semibold transition ${
+              selectedCategory === cat
+                ? "bg-cyan-500 text-white"
+                : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
+      {/* 🔹 Selector de cantidad + total productos */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <h2 className="text-lg font-semibold text-gray-700">
+          {filteredProducts.length} productos disponibles
+        </h2>
 
-        {/* Sidebar fijo en desktop */}
-        <div className="hidden md:block">
-          <CategoriesSidebar
-            categories={categories}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+        <div className="flex items-center">
+          <label className="text-gray-700 font-medium mr-2">Mostrar:</label>
+          <select
+            value={productsPerPage}
+            onChange={(e) => {
+              setProductsPerPage(Number(e.target.value));
+              setCurrentPage(1);
+            }}
+            className="border border-gray-300 rounded-lg px-3 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={15}>15</option>
+          </select>
         </div>
       </div>
 
-      {/* Grid de productos */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 w-full md:w-4/5">
+      {/* 🔹 Grilla de productos */}
+      <div ref={scrollRef} id="products-grid" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         <AnimatePresence>
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
+          {currentProducts.length > 0 ? (
+            currentProducts.map((product) => (
               <motion.div
                 key={product.id}
                 layout
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.5 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 500,
+                  damping: 25,
+                  mass: 0.5,
+                }}
               >
                 <ProductCard product={product} />
               </motion.div>
@@ -107,6 +163,51 @@ export default function ProductsGrid({ products, categories }) {
           )}
         </AnimatePresence>
       </div>
+
+      {/* 🔹 Paginación */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-10 flex-wrap gap-2">
+          <button
+            onClick={goToPrevious}
+            disabled={currentPage === 1}
+            className={`flex items-center px-4 py-2 rounded-lg font-semibold transition ${
+              currentPage === 1
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            <FiChevronLeft className="mr-1" />
+            Anterior
+          </button>
+
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                currentPage === index + 1
+                  ? "bg-blue-600 text-white"
+                  : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
+
+          <button
+            onClick={goToNext}
+            disabled={currentPage === totalPages}
+            className={`flex items-center px-4 py-2 rounded-lg font-semibold transition ${
+              currentPage === totalPages
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            }`}
+          >
+            Siguiente
+            <FiChevronRight className="ml-1" />
+          </button>
+        </div>
+      )}
     </div>
   );
 }
