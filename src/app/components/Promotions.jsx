@@ -23,7 +23,7 @@ export default function Promotions({ products }) {
       />
 
       <div className="mt-4 text-center">
-        <Link href="/productos?filter=promotion" className="inline-block px-4 py-2 border rounded-lg text-gray-800 font-semibold hover:bg-gray-100 transition">
+        <Link href="/products?filter=promotion" className="inline-block px-4 py-2 border rounded-lg text-gray-800 font-semibold hover:bg-gray-100 transition">
           Ver promociones
         </Link>
       </div>

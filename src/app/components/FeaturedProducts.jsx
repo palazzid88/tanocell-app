@@ -23,7 +23,7 @@ export default function FeaturedProducts({ products }) {
 
       <div className="mt-4 text-center">
         <Link
-          href="/productos?filter=featured"
+          href="/products?filter=featured"
           className="inline-block px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
         >
           Ver todos
