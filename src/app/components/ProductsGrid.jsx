@@ -10,11 +10,17 @@ export default function ProductsGrid({ products, categories }) {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [filteredProducts, setFilteredProducts] = useState(products || []);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true); // 👈 Nuevo estado de carga
 
   // 🔹 Paginación
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(8);
   const scrollRef = useRef(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1200); // simula tiempo de carga
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (selectedCategory === "all") {
@@ -36,14 +42,11 @@ export default function ProductsGrid({ products, categories }) {
   const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-useEffect(() => {
-  // Evita el scroll automático en la carga inicial
-  if (!scrollRef.current) return;
-  if (currentPage === 1 && productsPerPage === 8) return; // valores iniciales
-
-  scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-}, [currentPage, productsPerPage]);
-
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    if (currentPage === 1 && productsPerPage === 8) return;
+    scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [currentPage, productsPerPage]);
 
   const goToPrevious = () =>
     setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
@@ -52,7 +55,7 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col gap-8">
-      {/* 🔹 Selector de categorías - MOBILE (desplegable) */}
+      {/* 🔹 Selector de categorías - MOBILE */}
       <div className="md:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -83,7 +86,7 @@ useEffect(() => {
         </motion.div>
       </div>
 
-      {/* 🔹 Selector de categorías - DESKTOP (navbar superior) */}
+      {/* 🔹 Selector de categorías - DESKTOP */}
       <div className="hidden md:flex flex-wrap items-center gap-3 bg-gray-100 p-4 rounded-xl border border-gray-300">
         <button
           onClick={() => setSelectedCategory("all")}
@@ -133,42 +136,56 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* 🔹 Grilla de productos */}
+      {/* 🔹 Grilla de productos o Skeleton */}
       <div ref={scrollRef} id="products-grid" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        <AnimatePresence>
-          {currentProducts.length > 0 ? (
-            currentProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.9, y: -20 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 500,
-                  damping: 25,
-                  mass: 0.5,
-                }}
-              >
-                <ProductCard product={product} />
-              </motion.div>
-            ))
-          ) : (
-            <motion.p
-              className="text-gray-400 text-center col-span-full mt-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+        {loading ? (
+          // 🦴 Skeleton Loader
+          Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              className="animate-pulse bg-white rounded-xl shadow p-4 border border-gray-100"
             >
-              No hay productos en esta categoría.
-            </motion.p>
-          )}
-        </AnimatePresence>
+              <div className="h-48 bg-gray-200 rounded-xl mb-4" />
+              <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
+              <div className="h-4 bg-gray-200 rounded w-1/2" />
+            </div>
+          ))
+        ) : (
+          <AnimatePresence>
+            {currentProducts.length > 0 ? (
+              currentProducts.map((product) => (
+                <motion.div
+                  key={product.id}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.9, y: -20 }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25,
+                    mass: 0.5,
+                  }}
+                >
+                  <ProductCard product={product} />
+                </motion.div>
+              ))
+            ) : (
+              <motion.p
+                className="text-gray-400 text-center col-span-full mt-10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                No hay productos en esta categoría.
+              </motion.p>
+            )}
+          </AnimatePresence>
+        )}
       </div>
 
       {/* 🔹 Paginación */}
-      {totalPages > 1 && (
+      {!loading && totalPages > 1 && (
         <div className="flex justify-center items-center mt-10 flex-wrap gap-2">
           <button
             onClick={goToPrevious}
