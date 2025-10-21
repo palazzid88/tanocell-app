@@ -36,11 +36,14 @@ export default function ProductsGrid({ products, categories }) {
   const currentProducts = filteredProducts.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  }, [currentPage, productsPerPage]);
+useEffect(() => {
+  // Evita el scroll automático en la carga inicial
+  if (!scrollRef.current) return;
+  if (currentPage === 1 && productsPerPage === 8) return; // valores iniciales
+
+  scrollRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+}, [currentPage, productsPerPage]);
+
 
   const goToPrevious = () =>
     setCurrentPage((prev) => (prev > 1 ? prev - 1 : prev));
