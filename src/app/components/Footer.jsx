@@ -58,7 +58,7 @@ export default function Footer() {
       </div>
 
       <div className="mt-10 text-center text-gray-400 text-sm">
-        &copy; {new Date().getFullYear()} Inmobiliaria Pepito. Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} Tanocell. Todos los derechos reservados.
       </div>
     </footer>
   );
