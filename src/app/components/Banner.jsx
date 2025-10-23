@@ -1,23 +1,31 @@
-"use client";
+'use client';
 
 import { useState, useEffect, useRef } from "react";
 import { Wrench, Smartphone, Wifi, ShoppingBag } from "lucide-react";
 
-export default function Banner({ flyers = [] }) {
+export default function Banner() {
+  const localImages = [
+    "/img/banner1.jpg",
+    "/img/banner2.jpg",
+    "/img/banner3.jpg",
+    "/img/banner4.jpg",
+    "/img/banner5.jpg",
+    "/img/banner6.jpg",
+    "/img/banner7.jpg",
+  ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [servicios, setServicios] = useState([]);
   const intervalRef = useRef();
 
-  // ⏱️ Rotación automática de fondo
+  // ⏱️ Rotación automática de imágenes locales
   useEffect(() => {
-    if (!flyers?.length) return;
-
     intervalRef.current = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % flyers.length);
+      setCurrentIndex((prev) => (prev + 1) % localImages.length);
     }, 4000);
 
     return () => clearInterval(intervalRef.current);
-  }, [flyers]);
+  }, []);
 
   // 📂 Cargar servicios desde JSON
   useEffect(() => {
@@ -51,20 +59,18 @@ export default function Banner({ flyers = [] }) {
 
   return (
     <section className="relative overflow-hidden text-center py-32 px-6 min-h-[500px]">
-      {/* 🖼️ Fondo dinámico de flyers */}
+      {/* 🖼️ Fondo dinámico de imágenes locales */}
       <div className="absolute inset-0 z-0">
-        {flyers?.length > 0 &&
-          flyers.map((flyer, index) => (
-            <img
-              key={flyer.id}
-              src={flyer.images?.[0]?.url}
-              alt={flyer.info || "Flyer"}
-              className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
-                index === currentIndex ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
-        {/* ❌ Eliminado el filtro y la capa oscura */}
+        {localImages.map((img, index) => (
+          <img
+            key={img}
+            src={img}
+            alt={`Banner ${index + 1}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              index === currentIndex ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
       </div>
 
       {/* 🌟 Contenido del banner */}
