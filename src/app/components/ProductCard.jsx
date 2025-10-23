@@ -13,7 +13,7 @@ export default function ProductCard({ product, featured, promotion, compact = fa
   if (compact) {
     return (
       <div className="bg-gray-900 rounded-xl shadow-md p-3 border border-gray-700 flex flex-col gap-2 relative hover:scale-105 transition-all duration-300
-                      h-[300px] md:h-[330px] lg:h-[350px]"  style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
+                      h-[300px] md:h-[330px] lg:h-[350px]"  style={{ fontFamily: '"Comic Sans MS", "Comic Sans"' }}>
         {featured && <span className="absolute top-2 left-2 bg-yellow-400 text-black px-2 py-1 rounded font-semibold text-xs">Destacado</span>}
         {promotion && <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded font-semibold text-xs">En Promoción</span>}
 
