@@ -37,7 +37,7 @@ export default function ProductCard({ product, featured, promotion, compact = fa
   // 🔹 Versión "full" con mejoras de tamaño, tipografía y uniformidad
   return (
     <div className="bg-gray-900 rounded-xl shadow-md hover:shadow-xl border border-gray-700 hover:border-cyan-400 hover:scale-105 transition-all duration-300 flex flex-col relative
-                    h-[430px] md:h-[440px] lg:h-[460px] w-full md:w-[280px] lg:w-[300px] mx-auto p-4"  style={{ fontFamily: '"Comic Sans MS", "Comic Sans", cursive' }}>
+                    h-[430px] md:h-[440px] lg:h-[460px] w-full md:w-[280px] lg:w-[300px] mx-auto p-4"  style={{ fontFamily: '"Comic Sans MS", "Comic Sans"' }}>
       {featured && <span className="absolute top-2 left-2 bg-yellow-400 text-black px-2 py-1 rounded font-semibold text-xs">Destacado</span>}
       {promotion && <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded font-semibold text-xs">En Promoción</span>}
 
