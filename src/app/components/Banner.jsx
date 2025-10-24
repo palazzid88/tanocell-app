@@ -4,16 +4,22 @@ import { useState, useEffect, useRef } from "react";
 import { Wrench, Smartphone, Wifi, ShoppingBag } from "lucide-react";
 
 export default function Banner() {
+  // const localImages = [
+  //   "/img/banner1.jpg",
+  //   "/img/banner2.jpg",
+  //   "/img/banner3.jpg",
+  //   "/img/banner4.jpg",
+  //   "/img/banner5.jpg",
+  //   "/img/banner6.jpg",
+  //   "/img/banner7.jpg",
+  // ];
   const localImages = [
-    "/img/banner1.jpg",
-    "/img/banner2.jpg",
-    "/img/banner3.jpg",
-    "/img/banner4.jpg",
-    "/img/banner5.jpg",
-    "/img/banner6.jpg",
-    "/img/banner7.jpg",
+    "/img/7.png",
+    "/img/8.png",
+    "/img/9.png",
+    "/img/10.png",
+    "/img/11.png",
   ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [servicios, setServicios] = useState([]);
   const intervalRef = useRef();
