@@ -59,7 +59,7 @@ export default function ProductsGrid({ products, categories }) {
       <div className="md:hidden">
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="w-full bg-gray-200 px-4 py-2 rounded-lg font-semibold text-gray-800 hover:bg-gray-300 flex items-center justify-between transition"
+          className="w-full bg-gray-200 px-4 py-2 rounded-lg font-semibold text-gray-800 hover:bg-grey-800 flex items-center justify-between transition"
         >
           {sidebarOpen ? "Cerrar categorías" : "Seleccionar categoría"}
           <FiChevronDown
@@ -87,7 +87,7 @@ export default function ProductsGrid({ products, categories }) {
       </div>
 
       {/* 🔹 Selector de categorías - DESKTOP */}
-      <div className="hidden md:flex flex-wrap items-center gap-3 bg-gray-100 p-4 rounded-xl border border-gray-300">
+      <div className="hidden md:flex flex-wrap items-center gap-3 bg-gray-800 p-4 rounded-xl border border-grey-300">
         <button
           onClick={() => setSelectedCategory("all")}
           className={`px-4 py-2 rounded-lg font-semibold transition ${

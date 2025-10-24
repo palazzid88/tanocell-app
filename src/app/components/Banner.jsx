@@ -4,15 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { Wrench, Smartphone, Wifi, ShoppingBag } from "lucide-react";
 
 export default function Banner() {
-  // const localImages = [
-  //   "/img/banner1.jpg",
-  //   "/img/banner2.jpg",
-  //   "/img/banner3.jpg",
-  //   "/img/banner4.jpg",
-  //   "/img/banner5.jpg",
-  //   "/img/banner6.jpg",
-  //   "/img/banner7.jpg",
-  // ];
   const localImages = [
     "/img/7.png",
     "/img/8.png",
@@ -29,7 +20,6 @@ export default function Banner() {
     intervalRef.current = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % localImages.length);
     }, 4000);
-
     return () => clearInterval(intervalRef.current);
   }, []);
 
@@ -64,7 +54,7 @@ export default function Banner() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden text-center py-32 px-6 min-h-[500px]">
+    <section className="relative overflow-hidden text-center py-32 px-6 min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
       {/* 🖼️ Fondo dinámico de imágenes locales */}
       <div className="absolute inset-0 z-0">
         {localImages.map((img, index) => (
@@ -77,15 +67,17 @@ export default function Banner() {
             }`}
           />
         ))}
+        {/* Overlay oscuro para mejorar contraste neón */}
+        <div className="absolute inset-0 bg-black/40 z-1"></div>
       </div>
 
       {/* 🌟 Contenido del banner */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-neon-yellow drop-shadow-lg">
-          Bienvenido a <span className="text-neon-pink">Tanocell</span>
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-neon-yellow drop-shadow-neon-yellow">
+          Bienvenido a <span className="text-neon-pink drop-shadow-neon-pink">Tanocell</span>
         </h1>
 
-        <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-shadow-md">
+        <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-shadow-neon-blue">
           Accesorios, celulares, servicio técnico y mucho más.
         </p>
 
@@ -98,12 +90,10 @@ export default function Banner() {
                 className="flex flex-col items-center p-6 rounded-2xl bg-black/80 border-2 border-neon-pink shadow-[0_0_15px_#ff00ff,0_0_30px_#ff00ff]"
               >
                 {s.icon}
-                <h3 className="text-xl font-bold text-neon-yellow mt-4 mb-2">
+                <h3 className="text-xl font-bold text-neon-yellow mt-4 mb-2 drop-shadow-neon-yellow">
                   {s.title}
                 </h3>
-                <p className="text-gray-300 text-sm text-center">
-                  {s.description}
-                </p>
+                <p className="text-gray-300 text-sm text-center">{s.description}</p>
 
                 <a
                   href={`https://wa.me/5492615985233?text=Hola%20quiero%20consultar%20por%20${encodeURIComponent(

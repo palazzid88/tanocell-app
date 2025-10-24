@@ -9,7 +9,7 @@ export default function FeaturedProducts({ products }) {
   if (!featured.length) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-4 border border-gray-100">
+    <div className="bg-gray rounded-xl shadow-md p-4 ">
       <h3 className="text-lg font-bold mb-3 text-gray-700 text-center">
         Destacados
       </h3>
@@ -24,7 +24,7 @@ export default function FeaturedProducts({ products }) {
       <div className="mt-4 text-center">
         <Link
           href="/products?filter=featured"
-          className="inline-block px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
+          className="inline-block px-4 py-2 border border-grey-300 rounded-lg text-gray-700 hover:bg-gray-100 transition"
         >
           Ver todos
         </Link>

@@ -30,7 +30,7 @@ export default function RootLayout({ children }) {
       >
         <Navbar />
         <main>{children}</main>
-        <Footer />
+        <Footer id="contacto" />
       </body>
     </html>
   );

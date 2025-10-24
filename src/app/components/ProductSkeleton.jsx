@@ -1,6 +1,6 @@
 export default function ProductSkeleton() {
   return (
-    <div className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200 animate-pulse">
+    <div className="bg-black rounded-xl shadow-md overflow-hidden border border-gray-200 animate-pulse">
       {/* Imagen simulada */}
       <div className="h-40 bg-gray-300"></div>
 

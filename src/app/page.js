@@ -19,7 +19,7 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="flex flex-col min-h-screen bg-white text-gray-800">
+    <main className="flex flex-col min-h-screen bg-black text-gray-800">
       {/* Banner superior */}
       <Banner flyers={flyers} />
 
@@ -42,7 +42,7 @@ export default async function Home() {
       </section>
 
       {/* Grid de productos */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
+      <section id="productos" className="max-w-7xl mx-auto px-4 py-12">
         <ProductsGrid products={products} categories={categories} />
       </section>
 

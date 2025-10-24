@@ -1,6 +1,6 @@
 export default function Loading() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-700">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-gray-700">
       {/* Logo */}
       <img
         src="/img/logo.png" // 🧠 reemplazá por el path real del logo
