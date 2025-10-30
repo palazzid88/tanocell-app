@@ -74,7 +74,7 @@ export default function Banner() {
       {/* 🌟 Contenido */}
       <div className="relative z-10 max-w-7xl mx-auto">
         <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-neon-yellow neon-yellow">
-          Bienvenido a <span className="text-neon-pink">TANOCELL</span>
+          Bienvenido a <span className="text-white">TANOCELL</span>
         </h1>
 
         <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-neon-blue">
