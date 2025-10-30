@@ -25,7 +25,7 @@ export default function Navbar() {
         <nav className="hidden md:flex gap-6">
           <NeonBoxLink href="/" color="pink">Inicio</NeonBoxLink>
           <NeonBoxLink href="#productos" color="yellow">Productos</NeonBoxLink>
-          <NeonBoxLink href="#contacto" color="violet">Contacto</NeonBoxLink>
+          <NeonBoxLink href="#footer" color="violet">Contacto</NeonBoxLink>
         </nav>
 
         {/* Mobile menu toggle */}

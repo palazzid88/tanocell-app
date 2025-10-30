@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState, useEffect, useRef } from "react";
 import { Wrench, Smartphone, Wifi, ShoppingBag } from "lucide-react";
@@ -11,6 +11,7 @@ export default function Banner() {
     "/img/10.png",
     "/img/11.png",
   ];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [servicios, setServicios] = useState([]);
   const intervalRef = useRef();
@@ -55,7 +56,7 @@ export default function Banner() {
 
   return (
     <section className="relative overflow-hidden text-center py-32 px-6 min-h-[600px] md:min-h-[700px] lg:min-h-[800px]">
-      {/* 🖼️ Fondo dinámico de imágenes locales */}
+      {/* 🖼️ Fondo dinámico */}
       <div className="absolute inset-0 z-0">
         {localImages.map((img, index) => (
           <img
@@ -67,41 +68,48 @@ export default function Banner() {
             }`}
           />
         ))}
-        {/* Overlay oscuro para mejorar contraste neón */}
         <div className="absolute inset-0 bg-black/40 z-1"></div>
       </div>
 
-      {/* 🌟 Contenido del banner */}
+      {/* 🌟 Contenido */}
       <div className="relative z-10 max-w-7xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-neon-yellow drop-shadow-neon-yellow">
-          Bienvenido a <span className="text-neon-pink drop-shadow-neon-pink">Tanocell</span>
+        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 text-neon-yellow neon-yellow">
+          Bienvenido a <span className="text-neon-pink">TANOCELL</span>
         </h1>
 
-        <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-shadow-neon-blue">
+        <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-neon-blue">
           Accesorios, celulares, servicio técnico y mucho más.
         </p>
 
-        {/* Servicios Cards */}
+        {/* 🧩 Servicios Cards */}
         {servicios.length > 0 && (
-          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3 relative z-20">
+          <div className="mt-16 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {servicios.map((s, i) => (
               <div
                 key={i}
-                className="flex flex-col items-center p-6 rounded-2xl bg-black/80 border-2 border-neon-pink shadow-[0_0_15px_#ff00ff,0_0_30px_#ff00ff]"
+                className="flex flex-col items-center justify-between p-6 rounded-xl bg-black/70 border border-neon-pink shadow-[0_0_20px_#ff00ff40] hover:shadow-[0_0_30px_#ff00ff80] transition duration-500 h-full"
               >
-                {s.icon}
-                <h3 className="text-xl font-bold text-neon-yellow mt-4 mb-2 drop-shadow-neon-yellow">
+                {/* Icono */}
+                <div className="mb-4">{s.icon}</div>
+
+                {/* Título */}
+                <h3 className="text-xl font-bold text-neon-yellow mb-2 neon-yellow text-center">
                   {s.title}
                 </h3>
-                <p className="text-gray-300 text-sm text-center">{s.description}</p>
 
+                {/* Descripción */}
+                <p className="text-gray-300 text-sm text-center leading-relaxed flex-grow">
+                  {s.description}
+                </p>
+
+                {/* Botón */}
                 <a
                   href={`https://wa.me/5492615985233?text=Hola%20quiero%20consultar%20por%20${encodeURIComponent(
                     s.title
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-6 py-4 rounded-lg font-bold text-xl text-green-400 bg-black/60 hover:scale-105 transition transform duration-300 mt-4"
+                  className="px-5 py-3 mt-4 rounded-lg font-bold text-sm text-green-400 bg-black/50 border border-green-400/40 hover:bg-green-500/20 hover:scale-105 transition-all duration-300"
                 >
                   Consultar
                 </a>

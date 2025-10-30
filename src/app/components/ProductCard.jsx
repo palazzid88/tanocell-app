@@ -10,6 +10,18 @@ export default function ProductCard({ product, featured, promotion, compact = fa
 
   const imageUrl = images?.find(img => img.url)?.url ?? null;
 
+  // 🔹 Función para formatear precios al estilo argentino
+  const formatPrice = (value) => {
+    if (!value && value !== 0) return ""; // evita undefined
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
+      minimumFractionDigits: 0, // sin decimales
+      maximumFractionDigits: 0
+    }).format(value);
+  };
+
+  // 🔹 Versión compacta
   if (compact) {
     return (
       <div className="bg-gray-900 rounded-xl shadow-md p-3 border border-gray-700 flex flex-col gap-2 relative hover:scale-105 transition-all duration-300
@@ -20,7 +32,9 @@ export default function ProductCard({ product, featured, promotion, compact = fa
         {imageUrl && <img src={imageUrl} alt={name} className="w-full h-36 md:h-40 object-cover rounded-md" />}
 
         <h4 className="text-white font-semibold text-sm md:text-base truncate">{name}</h4>
-        <p className={`font-bold ${promotion ? "text-neon-pink" : "text-neon-blue"} text-base md:text-lg truncate`}>${price}</p>
+        <p className={`font-bold ${promotion ? "text-neon-pink" : "text-neon-blue"} text-base md:text-lg truncate`}>
+          {formatPrice(price)}
+        </p>
 
         <a
           href={whatsappLink}
@@ -34,10 +48,10 @@ export default function ProductCard({ product, featured, promotion, compact = fa
     );
   }
 
-  // 🔹 Versión "full" con mejoras de tamaño, tipografía y uniformidad
+  // 🔹 Versión "full"
   return (
     <div className="bg-gray-900 rounded-xl shadow-md hover:shadow-xl border border-gray-700 hover:border-cyan-400 hover:scale-105 transition-all duration-300 flex flex-col relative
-                    h-[430px] md:h-[440px] lg:h-[460px] w-full md:w-[280px] lg:w-[300px] mx-auto p-4"  style={{ fontFamily: '"Comic Sans MS", "Comic Sans"' }}>
+                    h-[430px] md:h-[440px] lg:h-[460px] w-full md:w-[280px] lg:w-[300px] mx-auto p-4" style={{ fontFamily: '"Comic Sans MS", "Comic Sans"' }}>
       {featured && <span className="absolute top-2 left-2 bg-yellow-400 text-black px-2 py-1 rounded font-semibold text-xs">Destacado</span>}
       {promotion && <span className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded font-semibold text-xs">En Promoción</span>}
 
@@ -52,7 +66,7 @@ export default function ProductCard({ product, featured, promotion, compact = fa
       <div className="flex flex-col justify-between flex-1">
         <div className="flex-1">
           <h3 className="text-lg md:text-xl font-semibold text-white leading-tight line-clamp-2">{name}</h3>
-          <p className="text-cyan-400 text-base md:text-lg font-bold mt-1">${price}</p>
+          <p className="text-cyan-400 text-base md:text-lg font-bold mt-1">{formatPrice(price)}</p>
         </div>
 
         <div className="flex flex-col gap-2 mt-3">

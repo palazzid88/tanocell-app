@@ -79,8 +79,7 @@ export default function Footer() {
         {/* Horarios */}
         <div className="flex flex-col gap-2">
           <h3 className="font-bold text-lg mb-2">Horario de Atención</h3>
-          <span>Lunes a Viernes: 9:00 - 18:00</span>
-          <span>Sábados: 10:00 - 14:00</span>
+          <span>Lunes a Viernes: 9:00 - 13:00 & 17:00 - 21:00</span>
         </div>
       </div>
 

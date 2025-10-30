@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function MapSection({ title = 'Nuestra Ubicación', googleMapsLink }) {
   return (
-    <section className="my-16 flex flex-col items-center">
+    <section id="#contact" className="my-16 flex flex-col items-center">
       {/* Título */}
       <h2 className="text-2xl font-bold mb-6 text-center text-cyan-400 drop-shadow-neon-cyan">
         {title}
