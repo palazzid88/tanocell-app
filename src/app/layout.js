@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Mi Aplicación",
-  description: "Servicios y tienda online",
+  title: "Tanocell Comunicaciones",
+  description: "Telefonía & Servicio Técnico",
 };
 
 export default function RootLayout({ children }) {
