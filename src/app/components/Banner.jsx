@@ -5,12 +5,12 @@ import { Wrench, Smartphone, Wifi, ShoppingBag } from "lucide-react";
 
 export default function Banner() {
   const localImages = [
-    "/img/7.png",
-    "/img/8.png",
-    "/img/9.png",
-    "/img/10.png",
-    "/img/11.png",
-  ];
+    "/img/21.webp",
+    "/img/22.webp",
+    "/img/23.webp",
+    "/img/24.webp",
+    "/img/25.webp",
+  ]
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [servicios, setServicios] = useState([]);
@@ -78,7 +78,7 @@ export default function Banner() {
         </h1>
 
         <p className="text-lg md:text-2xl mb-8 text-neon-blue drop-neon-blue">
-          Accesorios, celulares, servicio técnico y mucho más.
+          Accesorios, Celulares, Servicio Técnico y mucho más.
         </p>
 
         {/* 🧩 Servicios Cards */}
