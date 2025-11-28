@@ -2,22 +2,53 @@
 import base from "./airtable";
 
 export async function getProducts() {
-  const records = await base("Products").select({}).firstPage();
+  console.log("📡 Consultando Airtable…");
 
-  return records.map((record) => ({
-    id: record.id,
-    name: record.fields.name,
-    description: record.fields.description,
-    price: record.fields.price,
-    oldPrice: record.fields.oldPrice,
-    code: record.fields.code,
-    promotion: record.fields.promotion,
-    featured: record.fields.featured,
-    // Mapeamos todas las imágenes como un array de objetos { url, filename }
-    images: (record.fields.image || []).map(img => ({
-      url: img.url,
-      filename: img.filename
-    })),
-    category: record.fields.category || null,
-  }));
+  try {
+    const records = await base("Products").select({}).firstPage();
+
+    console.log("📦 Registros obtenidos:", records.length);
+    if (records.length > 0) {
+      console.log("📝 Primer registro:", JSON.stringify(records[0], null, 2));
+    }
+
+    return records.map((record) => {
+      const f = record.fields;
+
+      // LOG POR PRODUCTO QUE FALTA ALGÚN CAMPO
+      if (!f.name || !f.price || !f.image) {
+        console.warn("⚠ Producto con campos faltantes:", {
+          id: record.id,
+          name: f.name,
+          price: f.price,
+          image: f.image,
+        });
+      }
+
+      return {
+        id: record.id,
+        name: f.name || "",
+        description: f.description || "",
+        price: f.price || 0,
+        oldPrice: f.oldPrice || null,
+        code: f.code || "",
+        promotion: f.promotion || false,
+        featured: f.featured || false,
+
+        // Manejar imágenes opcionales
+        images:
+          Array.isArray(f.image)
+            ? f.image.map((img) => ({
+                url: img?.url || "",
+                filename: img?.filename || "",
+              }))
+            : [],
+
+        category: f.category || null,
+      };
+    });
+  } catch (error) {
+    console.error("❌ ERROR GRAVE AL CONSULTAR AIRTABLE:", error);
+    return [];
+  }
 }
