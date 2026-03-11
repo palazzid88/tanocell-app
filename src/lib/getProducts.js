@@ -5,7 +5,7 @@ export async function getProducts() {
   console.log("📡 Consultando Airtable…");
 
   try {
-    const records = await base("Products").select({}).firstPage();
+    const records = await base("Products").select({}).all();
 
     console.log("📦 Registros obtenidos:", records.length);
     if (records.length > 0) {
