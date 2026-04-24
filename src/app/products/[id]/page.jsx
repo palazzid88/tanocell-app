@@ -3,7 +3,7 @@ import { getProducts } from "@/lib/getProducts";
 import ProductCarousel from "@/app/components/ProductCarousel";
 
 export default async function ProductDetail({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const products = await getProducts();
   const product = products.find((p) => p.id === id);
 
